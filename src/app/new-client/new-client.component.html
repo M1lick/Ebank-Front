@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="card col-md-6 offset-3 mt-2">
+    <div class="card-header">Nouveau Client</div>
+    <div class="card-body">
+      <form [formGroup]="newClientFormGrop" (ngSubmit)="handleSaveClient()">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text"formControlName="name" class="form-control ">
+          <span class="text-danger"
+          *ngIf="newClientFormGrop.controls['name'].touched
+          && newClientFormGrop.controls['name'].errors
+          && newClientFormGrop.controls['name'].errors!['required']">
+            Le  Nom est obligatoire
+          </span>
+        </div>
+          <div class="mt-3">
+          <label class="form-label">Email</label>
+          <input type="text"formControlName="email" class="form-control ">
+          <span class="text-danger"
+                *ngIf="newClientFormGrop.controls['email'].touched
+          && newClientFormGrop.controls['email'].errors
+          && newClientFormGrop.controls['email'].errors!['email']">
+            L'email n'est pas valide
+          </span>
+        </div>
+         <button [disabled]="!newClientFormGrop.valid" class="btn btn-info">Save</button>
+
+      </form>
+    </div>
+</div>
+  </div>

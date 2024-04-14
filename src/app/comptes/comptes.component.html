@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Comptes</div>
+        <div class="card-body">
+          <form [formGroup]="compteFormGroup" (ngSubmit)="handleSearchCompte()">
+            <div class="input-group">
+              <label class="input-group-text">Id Compte :</label>
+              <input type="text" formControlName="compteId" class="form-control">
+              <button class="btn btn-info">
+                <i class="bi-search"></i>
+                Chercher
+              </button>
+            </div>
+          </form>
+          <ng-container *ngIf="compteObservable  | async as compteDetails">
+            <div class="mb-2">
+            <label>Id compte :</label>
+            <label><strong>{{compteDetails.id}}</strong></label>
+            </div>
+            <div class="mb-2">
+            <label>Solde :</label>
+              <label><strong>{{compteDetails.solde | number:'1.2-2'}}</strong></label>
+            </div>
+            <table class="table">
+              <thead>
+                <th>ID</th><th>Date</th><th>Type</th><th>Montant</th>
+              </thead>
+              <tbody>
+              <tr *ngFor="let op of compteDetails.operationDTOList ">
+                <td>{{op.id}}</td>
+                <td>{{op.dateOperation | date : 'dd-mm-yyyy : HH-mm-ss'}}</td>
+                <td>{{op.typeOperation}}</td>
+                <td class="text-end">{{op.montant  |number : '1.2-2'}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <ul class="nav nav-pills">
+              <li *ngFor="let item of [].constructor(compteDetails.totalPages);let  page=index">
+                <a [ngClass]="page==currentPage? 'btn btn-info':'btn btn-outline-info'" (click)="gotoPage(page)" class="btn ms-1 mt-1">{{page}}</a>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card" *ngIf="compteObservable">
+        <div class="card-header" *ngIf="authService.roles.includes('ADMIN')">Operations</div>
+        <div class="card-body" *ngIf="authService.roles.includes('ADMIN')">
+          <form [formGroup]="operationFormGroup" (ngSubmit)="handleSearchCompteOpertion()" method="post">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="typeOperation" value="RETRAIT">
+              <label class="form-check-label">RETRAIT :</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="typeOperation" value="DEPOT">
+              <label class="form-check-label">DEPOT :</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="typeOperation" value="TRANSFER">
+              <label class="form-check-label">TRANSFER :</label>
+            </div>
+            <div class="mb-3" *ngIf="operationFormGroup.value.typeOperation=='TRANSFER' ">
+              <label class="form-label">Compte destination :</label>
+              <input type="text" formControlName="compteDestination" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Montant :</label>
+              <input type="text" formControlName="montant" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description :</label>
+              <input type="text" formControlName="description" class="form-control">
+            </div>
+            <div class="d-grid mb-3">
+            <button class="btn btn-success">Valider</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
