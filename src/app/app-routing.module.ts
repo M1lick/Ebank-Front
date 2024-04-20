@@ -17,7 +17,7 @@ const routes: Routes = [
     children :[
       {path:"comptes",component : ComptesComponent},
       {path:"clients",component:ClientsComponent},
-      {path:"new-client",component : NewClientComponent ,canActivate:[AuthorizationGuard], data :{role:"ROLE_ADMINgit"}},
+      {path:"new-client",component : NewClientComponent ,canActivate:[AuthorizationGuard], data :{role:"ROLE_ADMIN"}},
       {path:"comptes-clients/:id",component :ComptesClientsComponent},
       {path:"notAuthorized",component:NotAuthorizedComponent}
     ]},

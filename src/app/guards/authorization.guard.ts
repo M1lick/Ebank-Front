@@ -13,7 +13,7 @@ export class AuthorizationGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.roles.includes("ADMIN")){
+    if (this.authService.roles.includes("ROLE_ADMIN")){
       return  true;
     }
     else {

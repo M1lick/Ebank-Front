@@ -14,20 +14,22 @@ export class AppHttpInterceptor implements HttpInterceptor {
   constructor(private  authService : AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log(request.url);
+    console.log(request.url)
     console.log("yess")
     if(!request.url.includes("/auth/login")) {
+     /* console.log('token')
+      console.log(this.authService.accessToken);
       let newRequest = request.clone({
         headers: request.headers.set('Authorization', 'Bearer '+this.authService.accessToken)
-      })
-      return next.handle(newRequest).pipe(
-        catchError(err=>{
-          if(err.status==401){
-            this.authService.logout();
-          }
-          return throwError(err.message)
-        })
-    );
+
+    })*/
+      const newRequest = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.authService.accessToken}`
+        }
+      });
+      console.log(newRequest)
+      return next.handle(newRequest);
     } else return  next.handle(request);
 
   }
