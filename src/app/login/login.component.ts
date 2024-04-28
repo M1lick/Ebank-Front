@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     this.autService.login(username,pwd).subscribe({
       next: data => {
         this.autService.loadProfile(data);
-        this.routeur.navigateByUrl("/admin")
+        this.routeur.navigateByUrl("/admin/home")
       },
       error: err => {console.log(err);}
     })

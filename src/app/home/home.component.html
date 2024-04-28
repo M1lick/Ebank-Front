@@ -1,0 +1,93 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Transactions Bancaires</h3>
+        </div>
+        <div class="card-body">
+          <ng-container *ngIf="compteObservable | async as compteDetails else faillureOrLoading">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                <tr class="bg-light">
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Montant</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let op of compteDetails.operationDTOList">
+                  <td>{{op.id}}</td>
+                  <td>{{op.dateOperation | date : 'dd-MM-yyyy : HH:mm:ss'}}</td>
+                  <td>{{op.typeOperation}}</td>
+                  <td class="text-end">{{op.montant | currency:'CFA ':'symbol':'1.2-2'}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <nav aria-label="Pagination">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" *ngFor="let item of [].constructor(compteDetails.totalPages); let page=index">
+                  <a class="page-link" [class.active]="currentPage === page" (click)="gotoPage(page)">{{page + 1}}</a>
+                </li>
+              </ul>
+            </nav>
+          </ng-container>
+          <ng-template #faillureOrLoading>
+            <ng-container *ngIf="errorMessage; else loading">
+              <div class="text-danger">
+                {{errorMessage}}
+              </div>
+            </ng-container>
+            <ng-template #loading>
+              Chargement en cours...
+            </ng-template>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Nouvelle Transaction</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="operationFormGroup" (ngSubmit)="handleSearchCompteOpertion()" method="post">
+            <div class="mb-3">
+              <label class="form-label">Type d'opération :</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="typeOperation" value="RETRAIT" id="retrait">
+                <label class="form-check-label" for="retrait">Retrait</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="typeOperation" value="DEPOT" id="depot">
+                <label class="form-check-label" for="depot">Dépôt</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" formControlName="typeOperation" value="TRANSFER" id="transfer">
+                <label class="form-check-label" for="transfer">Transfert</label>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="operationFormGroup.value.typeOperation=='TRANSFER' ">
+              <label class="form-label">Compte destination :</label>
+              <input type="text" formControlName="compteDestination" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Montant :</label>
+              <input type="text" formControlName="montant" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description :</label>
+              <input type="text" formControlName="description" class="form-control">
+            </div>
+            <div class="d-grid mb-3">
+              <button class="btn btn-success">Valider</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

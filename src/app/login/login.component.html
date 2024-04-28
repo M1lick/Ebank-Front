@@ -1,18 +1,23 @@
-<div class="p-3">
-  <div class="card">
-    <div class="card-header">Authentication</div>
-    <div class="card-body">
-      <form [formGroup]="formLogin" (ngSubmit)="handleLogin()">
-        <div class="mb-3">
-          <label class="form-label" >USername</label>
-          <input type="text" class="form-control" formControlName="username">
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 class="text-center mb-4">E-BANQUE</h1>
+      <div class="card">
+        <div class="card-header bg-primary text-white">Connexion</div>
+        <div class="card-body">
+          <form [formGroup]="formLogin" (ngSubmit)="handleLogin()">
+            <div class="mb-3">
+              <label class="form-label">Nom d'utilisateur</label>
+              <input type="text" class="form-control" formControlName="username" placeholder="Entrez votre nom d'utilisateur">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Mot de passe</label>
+              <input type="password" class="form-control" formControlName="password" placeholder="Entrez votre mot de passe">
+            </div>
+            <button class="btn btn-primary btn-block">Se connecter</button>
+          </form>
         </div>
-        <div class="mb-3">
-          <label class="form-label">PassWord</label>
-          <input type="password" class="form-control" formControlName="password">
-        </div>
-        <button class="btn btn-success">Login</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>
